@@ -1,0 +1,19 @@
+<main>
+    <div id="nombre">
+        <h1>ANDREW'S PARKING</h1>
+    </div>
+        <div class="centro">
+            <img class="Logo" src="https://static.vecteezy.com/system/resources/previews/015/069/333/large_2x/parking-icon-isolated-car-automobile-stop-symbol-sign-free-vector.jpg">
+            <div class ="container">
+            <form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+                <input type="text" id="username" [required]="true" placeholder="Usuario" name="username" ngModel #username [ngClass]="{lleno: username.value}">
+                <input type="password" id="password" placeholder="Contraseña" name="password" ngModel [required]="true" #password [ngClass]="{lleno: password.value}">
+                <button [disabled]="loginForm.invalid" class="boton-resaltado" type="submit">Iniciar sesión</button>
+                @if(errorLogin) {
+                    <p>Error en login</p>
+                }
+            </form>
+            <button class="boton-resaltado" [routerLink]="['/register']">Registrarse</button>
+        </div>
+    </div>
+</main>

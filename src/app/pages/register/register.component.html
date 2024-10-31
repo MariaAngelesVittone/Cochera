@@ -1,0 +1,20 @@
+<main>
+    <div id="nombre">
+        <h1>ANDREW'S PARKING</h1>
+    </div>
+    <div class="centro">
+        <img class="Logo" src="https://static.vecteezy.com/system/resources/previews/015/069/333/large_2x/parking-icon-isolated-car-automobile-stop-symbol-sign-free-vector.jpg">
+        <div class="container">
+            <form #registerForm="ngForm" (ngSubmit)="register(registerForm)">
+                <input type="text" id="nombre" placeholder="Nombre" name="nombre" ngModel required>
+                <input type="text" id="apellido" placeholder="Apellido" name="apellido" ngModel required>
+                <input type="text" id="username" placeholder="Usuario" name="username" ngModel required>
+                <input type="password" id="password" placeholder="Contraseña" name="password" ngModel required>
+                <button [disabled]="registerForm.invalid" class="boton-resaltado" type="submit">Registrarse</button>
+                @if(errorRegister) {
+                    <p>Error al registrarse</p>
+                }
+            </form>
+        </div>
+    </div>
+</main>

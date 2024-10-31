@@ -1,0 +1,26 @@
+<main>
+    <section>
+        <div class="container">
+            <table>
+                <thead>
+                    <td>Tiempo</td>
+                    <td>Costo</td>
+                    <td>Acciones</td>
+                </thead>
+                <tbody>
+                    @for (tarifa of dataTarifaService.tarifas; track tarifa.id){
+                    <tr>
+                        <td>{{tarifa.id}}</td>
+                        <td>{{tarifa.valor}}</td>
+                        <td><button (click)="editarPrecio(tarifa)">
+                                <img src="https://i.pinimg.com/564x/46/36/d4/4636d41f35f24dd8b3c78b79ea5c72dc.jpg"
+                                    alt="Editar">
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>

@@ -1,0 +1,93 @@
+@use './../../../../public/estilo/colors.scss';
+
+.link-activo{
+  color: colors.$color-principal;
+  font-weight: bold;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: colors.$color-principal;
+  border-bottom: 2px solid colors.$color-secundario;
+
+  h1 {
+    color: colors.$color-secundario;
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    a {
+      color: colors.$color-terciario;
+      font-size: 16px;
+      text-decoration: none;
+      margin-right: 20px;
+      transition: color 0.3s ease;
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      &.link-activo {
+        font-weight: bold;
+        color: colors.$color-secundario;
+      }
+
+      &:hover {
+        color: colors.$color-secundario;
+      }
+    }
+
+    .usuario {
+      position: relative;
+
+      a {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        margin-right: 0;
+
+        &::after {
+          font-size: 12px;
+          margin-left: 5px;
+        }
+      }
+
+      .dropdown {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        background-color: colors.$color-principal;
+        border: 1px solid colors.$color-principal;
+        padding: 5px;
+        z-index: 10;
+        box-shadow: 0 4px 8px colors.$color-secundario;
+
+        a {
+          display: block;
+          padding: 5px 10px;
+          white-space: nowrap;
+          color: colors.$color-terciario;
+          text-decoration: none;
+
+          &:hover {
+            background-color: colors.$color-principal;
+          }
+        }
+      }
+
+      &:hover .dropdown {
+        display: block;
+      }
+    }
+  }
+}

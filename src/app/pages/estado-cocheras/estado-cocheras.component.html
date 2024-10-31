@@ -1,0 +1,67 @@
+<main>
+    <section>
+        <div class="container">
+            <table>
+                <thead>
+                    <td>Nº</td>
+                    <td>Disponibilidad</td>
+                    <td>Ingreso</td>
+                    <td>Acciones</td>
+                </thead>
+                <tbody>
+                    @for (cochera of dataCocherasService.cocheras; track $index) {
+                    <tr>
+                        <td> {{ cochera.id }} </td>
+                        <td>
+                            @if (cochera.deshabilitada) {
+                            <button class="deshabilitada">
+                                Deshabilitada
+                            </button>
+                            } @else if (!cochera.estacionamiento?.horaEgreso && cochera.estacionamiento?.horaIngreso) {
+                            <button (click)="cerrarEstacionamiento(cochera)">
+                                {{ cochera.estacionamiento?.patente }}
+                            </button>
+                            } @else {
+                            <button class="disponible" (click)="abrirEstacionamiento(cochera.id)">
+                                Disponible
+                            </button>
+                            }
+                        </td>
+                        <td>{{ cochera.descripcion }}</td>
+                        <td class="acciones-container">
+
+                            @if(!cochera.deshabilitada){
+                            <button (click)="preguntarDeshabilitarCochera(cochera.id)"><img
+                                    src="https://i.pinimg.com/564x/49/74/20/49742039c560618e1cfb0f8a4db4395f.jpg"
+                                    alt="Deshabilitar cochera"></button>
+                            } @else {
+                            <button (click)="preguntarHabilitarCochera(cochera.id)"><img
+                                    src="https://i.pinimg.com/564x/8e/ae/75/8eae7578f9532ac579510fb9609613ee.jpg"
+                                    alt="Habilitar cochera"></button>
+
+                            }
+                            @if(esAdmin){
+                            <button (click)="preguntarBorrarCochera(cochera.id)"><img
+                                    src="https://i.pinimg.com/564x/09/90/f8/0990f82b768e363f0dec55de307fdf4c.jpg"
+                                    alt="Eliminar cochera"></button>
+                            }
+
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            @if(esAdmin){
+            <button (click)="preguntarAgregarCochera()" class="boton-resaltado" id="agregar-cochera">+</button>
+            }
+            @if(esAdmin) {
+            <button (click)="preguntarBorrarTodasLasCocheras()" class="boton-resaltado"
+                id="borrar-todas-cocheras">Borrar
+                todas las cocheras</button>
+            }
+
+        </div>
+    </section>
+</main>

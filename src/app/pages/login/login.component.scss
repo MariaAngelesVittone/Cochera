@@ -1,0 +1,78 @@
+@use './../../../../public/estilo/colors.scss' as colors;
+
+main {
+    background-image: url(https://images.pexels.com/photos/1756957/pexels-photo-1756957.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+    background-size: cover;
+    background-position: 20%;
+    background-blend-mode: darken;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: colors.$color-principal;
+    height: 100vh;
+}
+
+h1 {
+    color: colors.$color-principal;
+    font-size: 32px;
+    font-weight: bold;
+
+  }
+
+.centro {
+    display: flex;
+    margin: auto;
+    margin-top: 100px;
+    background-color: colors.$color-secundario;
+    border-radius: 10px;
+    border: 2px colors.$color-secundario;
+    width: 30rem;
+    height: 25rem;
+    position: relative;
+
+    .Logo {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 105px;
+        border-radius: 50px;
+        border: 2px colors.$color-secundario ;
+        width: 105px;
+
+    }
+
+    .container {
+        display: flex;
+        margin-left: 30px;
+        margin-top: 90px;
+        flex-direction: column;
+    }
+
+}
+
+button,
+input {
+    background-color: colors.$color-terciario;
+    border: 2px solid colors.$color-terciario;
+    padding: 20px 20px;
+    margin: 4px 2px;
+    cursor: grab;
+    border-radius: 8px;
+    width: 400px;
+    box-sizing: border-box;
+    position: relative;
+    // background-color: red ;
+
+
+    &:hover {
+        background-color: colors.$color-principal;
+        border: 2px solid colors.$color-principal;
+        color: colors.$color-terciario;
+
+    }
+}
+
+.lleno {
+     background-color: colors.$color-principal;
+     border: 2px solid colors.$color-principal;
+     color: colors.$color-terciario;
+  }

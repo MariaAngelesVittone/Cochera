@@ -1,0 +1,60 @@
+@use './../../../../public/estilo/colors.scss';
+@use "./../../../styles.scss";
+
+main {
+    background-image: url(https://images.pexels.com/photos/1756957/pexels-photo-1756957.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2);
+    background-size: cover;
+    height: 100vhs;
+    color: colors.$color-secundario;
+    font-size: medium;
+}
+
+table {
+
+    margin: 2.5vw 0;
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+thead th {
+    font-weight: bolder;
+    color: colors.$color-terciario;
+    padding: 10px;
+    border-bottom: 2px solid colors.$color-secundario;
+}
+
+td {
+    align-content: center;
+}
+
+tbody td {
+    padding: 10px;
+    border-bottom: 1px solid colors.$color-secundario;
+}
+
+img {
+    height: 30px;
+    width: 30px;
+}
+
+section {
+    padding: 1.3vw 0;
+}
+
+.container {
+    margin: 2vw auto;
+    height: 27.9rem;
+    width: 40rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
+    border: 2px colors.$color-secundario;
+    background-color: colors.$color-principal;
+    color: colors.$color-terciario;
+    align-content: center;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
