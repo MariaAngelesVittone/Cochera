@@ -22,10 +22,13 @@ export class PreciosComponent {
       inputPlaceholder: "Ingrese el nuevo precio"
     });
     console.log(precio)
+    tarifa.valor = precio.value;
     if (precio) {
-      Swal.fire(`Nuevo precio: ${precio}`);
+      Swal.fire(`Nuevo precio: ${precio.value}`);
     }
 
-    this.dataTarifaService.actualizarTarifa(tarifa);
+    this.dataTarifaService.actualizarTarifa(tarifa).then(res => {
+      if(res) this.dataTarifaService.getTarifas()}
+    )
   }
 }

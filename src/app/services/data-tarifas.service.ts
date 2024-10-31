@@ -44,8 +44,10 @@ export class DataTarifasService {
     console.log(res)
     if (res.status !== 200) {
       console.log("Error al actualizar la tarifa")
+      return false
     } else {
       console.log("Actualizacion de tarifa exitosa")
+      return true
     };
   }
 
