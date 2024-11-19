@@ -11,8 +11,11 @@ main {
 }
 
 h1 {
-    margin-left: 2%;
-}
+    color: colors.$color-principal;
+    font-size: 32px;
+    font-weight: bold;
+
+  }
 
 .centro {
     display: flex;
@@ -64,6 +67,12 @@ input {
 
     }
 }
+
+.lleno {
+    background-color: colors.$color-principal;
+    border: 2px solid colors.$color-principal;
+    color: colors.$color-terciario;
+ }
 
 p {
     color: red($color: #000000);

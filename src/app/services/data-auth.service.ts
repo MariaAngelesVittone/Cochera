@@ -6,11 +6,26 @@ import { Register } from '../interfaces/register';
 @Injectable({
   providedIn: 'root'
 })
+
 export class DataAuthService {
-
-  constructor() { }
-
   usuario: Usuario | undefined;
+
+  constructor() {
+    const tokenLocalStorage = localStorage.getItem("authToken");
+    if(tokenLocalStorage) {
+      const userLocalStorage = parseJwt(tokenLocalStorage)
+      if(!userLocalStorage) return;
+      this.usuario = {
+        username : userLocalStorage.username,
+        token: tokenLocalStorage,
+        esAdmin: userLocalStorage.esAdmin ? true : false
+      }
+
+    this.usuario!.token = tokenLocalStorage
+
+    }
+   }
+
 
   async login(loginData: Login) {
     const res = await fetch('http://localhost:4000/login', {
@@ -30,8 +45,9 @@ export class DataAuthService {
     this.usuario = {
         username: loginData.username,
         token: resJson.token,
-        esAdmin: false
+        esAdmin: true
     };
+
 
     localStorage.setItem("authToken", resJson.token);
 
@@ -72,4 +88,16 @@ export class DataAuthService {
   clearToken() {
     localStorage.removeItem("authToken")
   }
+  
 }
+
+function parseJwt (token:string) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+}
+

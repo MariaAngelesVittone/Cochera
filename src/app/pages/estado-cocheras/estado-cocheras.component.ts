@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Cochera } from '../../interfaces/cochera';
 import { CommonModule } from '@angular/common';
@@ -12,9 +12,11 @@ import { DataTarifasService } from '../../services/data-tarifas.service';
   standalone: true,
   imports: [RouterModule,CommonModule],
   templateUrl: './estado-cocheras.component.html',
-  styleUrl: './estado-cocheras.component.scss'
+  styleUrl: './estado-cocheras.component.scss',
+  providers: [DataCocherasService]
+
 })
-export class EstadoCocherasComponent {
+export class EstadoCocherasComponent implements OnInit{
   authService = inject(DataAuthService);
   dataTarifasService = inject(DataTarifasService);
 
@@ -22,6 +24,13 @@ export class EstadoCocherasComponent {
 
   dataCocherasService = inject(DataCocherasService)
 
+async ngOnInit(): Promise<void> {
+    try {
+      await this.dataCocherasService.loadData(); // Cargar las cocheras al iniciar
+    } catch (error) {
+      console.error("Error al cargar los datos iniciales de cocheras:", error);
+    }
+  }
 
   preguntarAgregarCochera(){
     Swal.fire({
@@ -43,23 +52,32 @@ export class EstadoCocherasComponent {
     });
   }
 
-  preguntarBorrarCochera(cocheraId: number){
+  preguntarBorrarCochera(cocheraId: number) {
+    const cochera = this.dataCocherasService.cocheras.find(c => c.id === cocheraId);
+    if (cochera && cochera.estacionamiento) {
+      Swal.fire({
+        title: "La cochera está en uso",
+        text: "No puedes borrar una cochera que tiene un vehículo estacionado.",
+        icon: "error",
+        confirmButtonText: "Aceptar"
+      });
+      return; // No proceder con el borrado si la cochera está en uso.
+    }
+  
     Swal.fire({
       title: "Borrar cochera?",
       showCancelButton: true,
       confirmButtonText: "Eliminar",
       denyButtonText: `Cancelar`,
-      inputValidator: (value)=> {
-        console.warn('revisando value',value)
-        if(!value) return 'Falta escribir un identificador a la cochera';
+      inputValidator: (value) => {
+        if (!value) return 'Falta escribir un identificador a la cochera';
         for (let i = 0; i < this.dataCocherasService.cocheras.length; i++) {
           const element = this.dataCocherasService.cocheras[i];
-          if(element.descripcion === value) return 'Ese identificador de cochera ya existe';
+          if (element.descripcion === value) return 'Ese identificador de cochera ya existe';
         }
         return;
       }
     }).then(async (result) => { 
-      /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         await this.dataCocherasService.borrarFila(cocheraId)
         Swal.fire("Saved!", "", "success");
@@ -68,28 +86,19 @@ export class EstadoCocherasComponent {
       }
     });
   }
-
-  preguntarBorrarTodasLasCocheras() {
-    Swal.fire({
-      title: "¿Borrar todas las cocheras?",
-      text: "Esta acción no se puede deshacer.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Eliminar todas",
-      cancelButtonText: "Cancelar",
-
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        await this.dataCocherasService.borrarTodasLasFilas();
-        Swal.fire("Saved!", "", "success");
-      } else if (result.isDismissed) {
-        Swal.fire("Changes are not saved", "", "info");
-      }
-    });
-  }
   
 
-  preguntarDeshabilitarCochera(cocheraId: number){
+  preguntarDeshabilitarCochera(cocheraId: number) {
+    const cochera = this.dataCocherasService.cocheras.find(c => c.id === cocheraId);
+    if (cochera && cochera.estacionamiento) {
+      Swal.fire({
+        title: "La cochera está en uso",
+        text: "No puedes deshabilitar una cochera que tiene un vehículo estacionado.",
+        icon: "error",
+        confirmButtonText: "Aceptar"
+      });
+      return;
+    }
     Swal.fire({
       title: "Deshabilitar cochera?",
       showCancelButton: true,
@@ -97,29 +106,36 @@ export class EstadoCocherasComponent {
       denyButtonText: `Cancelar`
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await this.dataCocherasService.deshabilitarCochera(cocheraId)
-        // Swal.fire("Saved!", "", "success");
-      } else if (result.isDenied) {
-        // Swal.fire("Changes are not saved", "", "info");
+        await this.dataCocherasService.deshabilitarCochera(cocheraId);
       }
     });
   }
-
-  preguntarHabilitarCochera(cocheraId: number){
+  
+  preguntarHabilitarCochera(cocheraId: number) {
     Swal.fire({
-      title: "Hablitar cochera?",
+      title: "¿Habilitar cochera?",
       showCancelButton: true,
       confirmButtonText: "Habilitar",
-      denyButtonText: `Cancelar`
+      cancelButtonText: `Cancelar`
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await this.dataCocherasService.habilitarCochera(cocheraId)
-        // Swal.fire("Saved!", "", "success");
-      } else if (result.isDenied) {
-        // Swal.fire("Changes are not saved", "", "info");
+        try {
+          console.log("Intentando habilitar cochera con ID:", cocheraId);
+          if (!cocheraId) {
+            Swal.fire("Error", "ID de cochera no válido.", "error");
+            return;
+          }
+          await this.dataCocherasService.habilitarCochera(cocheraId);
+          Swal.fire("Éxito", "La cochera ha sido habilitada correctamente.", "success");
+        } catch (error) {
+          console.error("Error al habilitar la cochera:", error);
+          Swal.fire("Error", "No se pudo habilitar la cochera. Intenta nuevamente.", "error");
+        }
       }
     });
   }
+  
+  
 
   abrirEstacionamiento(idCochera: number) {
     const idUsuarioIngreso = "ADMIN"
@@ -186,10 +202,6 @@ export class EstadoCocherasComponent {
                 <h4>Horario de inicio: ${horaFormateada}</h4>
                 <h4>Tiempo transcurrido: ${horasPasadas} horas y ${minutosPasados} minutos</h4>
                 <hr style="border: 1px solid #ccc;">
-                <h2 style="margin: 20px 0 10px; text-align: center;">Total a cobrar</h2>
-                <div style="background-color: #28a745; color: white; font-size: 24px; padding: 10px; border-radius: 5px; text-align: center; margin: 0 auto; display: block; width: fit-content;">
-                    $${total}
-                </div>
                 <div style="margin-top: 20px; text-align: center;">
                     <button id="cobrar" class="swal2-confirm swal2-styled" style="background-color: #007bff; padding: 10px 24px;">Cobrar</button>
                     <button id="volver" class="swal2-cancel swal2-styled" style="background-color: #aaa; padding: 10px 24px;">Volver</button>

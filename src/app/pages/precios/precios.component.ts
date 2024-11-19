@@ -1,5 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { Estacionamiento } from '../../interfaces/estacionamiento';
 import { DataTarifasService } from '../../services/data-tarifas.service';
 import Swal from 'sweetalert2';
 import { Tarifa } from '../../interfaces/tarifa';

@@ -1,9 +1,7 @@
 <header>
     <h1>ANDREW'S PARKING</h1>
     <nav>
-            <a [routerLink]="['/estado-cocheras']" routerLinkActive="link-activo" >Estado cocheras</a>
-    
-        
+        <a [routerLink]="['/estado-cocheras']" routerLinkActive="link-activo" >Estado cocheras</a>
         @if(esAdmin){
             <a [routerLink]="['/reportes']" routerLinkActive="link-activo" >Reportes</a>
             <a [routerLink]="['/precios']" routerLinkActive="link-activo" >Precios</a>
@@ -11,7 +9,7 @@
         <div class="usuario">
             <a>Usuario</a>
             <div class="dropdown">
-                <a [routerLink]="['/login']">Cerrar sesión</a>
+                <button (click)="cerrarSesion()">Cerrar sesión</button>
             </div>
         </div>
         
